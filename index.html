@@ -1,41 +1,84 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta name="google-site-verification" content="DGgIS6LN5vvOAIWMTcM1bHY77o02GwodivpZzrHWZ1E" />
   <meta charset="UTF-8" />
+<meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
+  <!-- 여기에 구글 소유권 meta 태그 넣기 -->
+  <!-- <meta name="google-site-verification" content="여기에코드" /> -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>뽑기 웹</title>
+  <meta name="description" content="뽑기 웹은 이름을 입력하고 로또 공 애니메이션처럼 랜덤으로 한 명을 뽑을 수 있는 무료 웹 도구입니다." />
+  <title>뽑기 웹 - 랜덤 이름 뽑기</title>
+
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Arial, "Malgun Gothic", sans-serif;
-      background: white;
+      background: #ffffff;
       color: #111827;
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      z-index: 10;
+    }
+
+    nav {
+      max-width: 1100px;
+      margin: auto;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav strong {
+      font-size: 22px;
+    }
+
+    nav a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 6px;
     }
 
     .app {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 1100px;
+      margin: auto;
       padding: 16px;
     }
 
-    h1 {
+    .hero {
       text-align: center;
-      font-size: clamp(30px, 6vw, 52px);
-      margin: 20px 0;
+      padding: 32px 10px;
     }
 
-    .panel {
+    .hero h1 {
+      font-size: clamp(32px, 7vw, 56px);
+      margin: 0 0 10px;
+    }
+
+    .hero p {
+      color: #4b5563;
+      font-size: 17px;
+    }
+
+    .panel, section {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
     }
 
     .controls {
@@ -56,7 +99,6 @@
     input {
       border: 1px solid #d1d5db;
       background: white;
-      color: #111827;
       width: 100%;
     }
 
@@ -122,7 +164,7 @@
 
     .result-box {
       margin-top: 16px;
-      padding: 20px;
+      padding: 22px;
       border-radius: 20px;
       background: #fef3c7;
       border: 2px solid #f59e0b;
@@ -132,15 +174,21 @@
       min-height: 90px;
     }
 
-    .small {
+    h2 {
+      margin-top: 0;
+      font-size: 26px;
+    }
+
+    footer {
       text-align: center;
+      padding: 24px;
       color: #6b7280;
       font-size: 14px;
     }
 
     @media (max-width: 500px) {
-      .app {
-        padding: 10px;
+      nav {
+        justify-content: center;
       }
 
       .machine {
@@ -155,34 +203,113 @@
 
       input, button {
         font-size: 15px;
-        padding: 11px;
       }
     }
   </style>
 </head>
-<body>
-  <div class="app">
-    <h1>뽑기 웹</h1>
 
-    <div class="panel">
+<body>
+  <header>
+    <nav>
+      <strong>뽑기 웹</strong>
+      <div>
+        <a href="#game">뽑기</a>
+        <a href="#about">소개</a>
+        <a href="#how">사용법</a>
+        <a href="#privacy">개인정보</a>
+        <a href="#terms">약관</a>
+        <a href="#contact">문의</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="app">
+    <div class="hero">
+      <h1>랜덤 이름 뽑기</h1>
+      <p>이름을 입력하고 로또 공처럼 섞이는 애니메이션으로 한 명을 뽑아보세요.</p>
+    </div>
+
+    <div class="panel" id="game">
       <div class="controls">
-        <input id="countInput" type="number" min="2" max="20" value="6">
+        <input id="countInput" type="number" min="2" max="30" value="6">
         <button onclick="makeNames()">이름칸 만들기</button>
         <button onclick="startDraw()">뽑기 시작</button>
         <button class="danger" onclick="resetAll()">초기화</button>
       </div>
 
-      <p class="small">이름을 직접 바꾸고 뽑기 시작을 누르면 로또 공처럼 섞이다가 한 명이 뽑혀.</p>
-
       <div id="nameList" class="name-list"></div>
+
+      <div class="machine" id="machine"></div>
+
+      <div class="result-box" id="resultBox">
+        결과가 여기에 나와요
+      </div>
     </div>
 
-    <div class="machine" id="machine"></div>
+    <section id="about">
+      <h2>뽑기 웹 소개</h2>
+      <p>
+        뽑기 웹은 여러 사람의 이름을 입력한 뒤 무작위로 한 명을 뽑을 수 있는 무료 웹 도구입니다.
+        친구들과 게임을 할 때, 발표 순서를 정할 때, 청소 당번을 정할 때, 간단한 추첨을 할 때 사용할 수 있습니다.
+      </p>
+      <p>
+        별도의 회원가입 없이 사용할 수 있으며, 스마트폰, 태블릿, 컴퓨터 화면에 맞게 자동으로 크기가 조절됩니다.
+      </p>
+    </section>
 
-    <div class="result-box" id="resultBox">
-      결과가 여기에 나와
-    </div>
-  </div>
+    <section id="how">
+      <h2>사용법</h2>
+      <p>
+        1. 뽑을 사람 수를 입력합니다.<br>
+        2. 이름칸 만들기 버튼을 누릅니다.<br>
+        3. 각 칸에 원하는 이름을 입력합니다.<br>
+        4. 뽑기 시작 버튼을 누르면 공들이 섞이다가 당첨자가 표시됩니다.
+      </p>
+      <p>
+        결과는 완전 랜덤으로 정해지며, 다시 뽑고 싶다면 뽑기 시작 버튼을 다시 누르면 됩니다.
+      </p>
+    </section>
+
+    <section id="privacy">
+      <h2>개인정보처리방침</h2>
+      <p>
+        뽑기 웹은 사용자의 이름 입력값을 서버에 저장하지 않습니다.
+        입력한 이름은 현재 브라우저 화면에서만 사용되며, 페이지를 새로고침하거나 닫으면 사라질 수 있습니다.
+      </p>
+      <p>
+        본 사이트는 서비스 개선 및 광고 제공을 위해 향후 Google AdSense 같은 외부 광고 서비스를 사용할 수 있습니다.
+        광고 서비스는 쿠키를 사용할 수 있으며, 사용자는 브라우저 설정에서 쿠키 사용을 제한할 수 있습니다.
+      </p>
+    </section>
+
+    <section id="terms">
+      <h2>이용약관</h2>
+      <p>
+        뽑기 웹은 재미와 편의를 위한 랜덤 추첨 도구입니다.
+        본 사이트의 결과는 무작위로 생성되며, 중요한 계약, 금전 거래, 법적 판단 등의 목적으로 사용하는 것은 권장하지 않습니다.
+      </p>
+      <p>
+        사이트는 무료로 제공되며, 기능은 필요에 따라 수정되거나 변경될 수 있습니다.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2>문의</h2>
+      <p>
+        사이트 오류, 개선 요청, 문의 사항이 있다면 운영자에게 연락할 수 있습니다.
+      </p>
+      <p>
+        이메일: hongtaegeongaebalja@gmail.com
+      </p>
+      <p>
+        위 이메일 부분은 네 이메일로 바꿔서 사용하면 됩니다.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 뽑기 웹. All rights reserved.
+  </footer>
 
   <script>
     const nameList = document.getElementById("nameList");
@@ -196,12 +323,9 @@
       let count = Number(document.getElementById("countInput").value);
 
       if (count < 2) count = 2;
-      if (count > 20) count = 20;
+      if (count > 30) count = 30;
 
       document.getElementById("countInput").value = count;
-
-      names = [];
-
       nameList.innerHTML = "";
 
       for (let i = 0; i < count; i++) {
@@ -212,7 +336,7 @@
       }
 
       makeBalls();
-      resultBox.textContent = "결과가 여기에 나와";
+      resultBox.textContent = "결과가 여기에 나와요";
     }
 
     function getNames() {
@@ -234,11 +358,8 @@
         ball.className = "ball";
         ball.textContent = input.value || `${index + 1}번`;
 
-        const x = Math.random() * 75;
-        const y = Math.random() * 70;
-
-        ball.style.left = x + "%";
-        ball.style.top = y + "%";
+        ball.style.left = Math.random() * 78 + "%";
+        ball.style.top = Math.random() * 72 + "%";
         ball.style.animationDelay = Math.random() + "s";
         ball.style.animationDuration = (0.8 + Math.random() * 0.8) + "s";
 
@@ -262,13 +383,14 @@
       });
 
       let time = 0;
+
       const shuffle = setInterval(() => {
         const randomName = names[Math.floor(Math.random() * names.length)];
         resultBox.textContent = randomName;
 
         balls.forEach(ball => {
-          ball.style.left = Math.random() * 80 + "%";
-          ball.style.top = Math.random() * 75 + "%";
+          ball.style.left = Math.random() * 78 + "%";
+          ball.style.top = Math.random() * 72 + "%";
         });
 
         time += 100;
