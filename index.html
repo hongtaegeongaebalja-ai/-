@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>뽑기 웹</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Malgun Gothic", sans-serif;
+      background: white;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(30px, 6vw, 52px);
+      margin: 20px 0;
+    }
+
+    .panel {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    input, button {
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    input {
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #111827;
+      width: 100%;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .danger {
+      background: #ef4444;
+    }
+
+    .danger:hover {
+      background: #dc2626;
+    }
+
+    .name-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .machine {
+      position: relative;
+      height: 360px;
+      background: linear-gradient(#ffffff, #eef2ff);
+      border: 4px solid #2563eb;
+      border-radius: 30px;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .ball {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #facc15 45%, #f97316);
+      border: 3px solid #ea580c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 13px;
+      color: #111827;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, -30px) rotate(90deg); }
+      50% { transform: translate(-15px, 25px) rotate(180deg); }
+      75% { transform: translate(25px, 15px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+
+    .result-box {
+      margin-top: 16px;
+      padding: 20px;
+      border-radius: 20px;
+      background: #fef3c7;
+      border: 2px solid #f59e0b;
+      text-align: center;
+      font-size: clamp(24px, 6vw, 44px);
+      font-weight: bold;
+      min-height: 90px;
+    }
+
+    .small {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .app {
+        padding: 10px;
+      }
+
+      .machine {
+        height: 300px;
+      }
+
+      .ball {
+        width: 58px;
+        height: 58px;
+        font-size: 11px;
+      }
+
+      input, button {
+        font-size: 15px;
+        padding: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>뽑기 웹</h1>
+
+    <div class="panel">
+      <div class="controls">
+        <input id="countInput" type="number" min="2" max="20" value="6">
+        <button onclick="makeNames()">이름칸 만들기</button>
+        <button onclick="startDraw()">뽑기 시작</button>
+        <button class="danger" onclick="resetAll()">초기화</button>
+      </div>
+
+      <p class="small">이름을 직접 바꾸고 뽑기 시작을 누르면 로또 공처럼 섞이다가 한 명이 뽑혀.</p>
+
+      <div id="nameList" class="name-list"></div>
+    </div>
+
+    <div class="machine" id="machine"></div>
+
+    <div class="result-box" id="resultBox">
+      결과가 여기에 나와
+    </div>
+  </div>
+
+  <script>
+    const nameList = document.getElementById("nameList");
+    const machine = document.getElementById("machine");
+    const resultBox = document.getElementById("resultBox");
+
+    let names = [];
+    let isDrawing = false;
+
+    function makeNames() {
+      let count = Number(document.getElementById("countInput").value);
+
+      if (count < 2) count = 2;
+      if (count > 20) count = 20;
+
+      document.getElementById("countInput").value = count;
+
+      names = [];
+
+      nameList.innerHTML = "";
+
+      for (let i = 0; i < count; i++) {
+        const input = document.createElement("input");
+        input.value = `${i + 1}번`;
+        input.placeholder = "이름 입력";
+        nameList.appendChild(input);
+      }
+
+      makeBalls();
+      resultBox.textContent = "결과가 여기에 나와";
+    }
+
+    function getNames() {
+      const inputs = nameList.querySelectorAll("input");
+      names = [];
+
+      inputs.forEach((input, index) => {
+        names.push(input.value.trim() || `${index + 1}번`);
+      });
+    }
+
+    function makeBalls() {
+      machine.innerHTML = "";
+
+      const inputs = nameList.querySelectorAll("input");
+
+      inputs.forEach((input, index) => {
+        const ball = document.createElement("div");
+        ball.className = "ball";
+        ball.textContent = input.value || `${index + 1}번`;
+
+        const x = Math.random() * 75;
+        const y = Math.random() * 70;
+
+        ball.style.left = x + "%";
+        ball.style.top = y + "%";
+        ball.style.animationDelay = Math.random() + "s";
+        ball.style.animationDuration = (0.8 + Math.random() * 0.8) + "s";
+
+        machine.appendChild(ball);
+      });
+    }
+
+    function startDraw() {
+      if (isDrawing) return;
+
+      getNames();
+      makeBalls();
+
+      isDrawing = true;
+      resultBox.textContent = "섞는 중...";
+
+      const balls = document.querySelectorAll(".ball");
+
+      balls.forEach(ball => {
+        ball.style.animationDuration = "0.35s";
+      });
+
+      let time = 0;
+      const shuffle = setInterval(() => {
+        const randomName = names[Math.floor(Math.random() * names.length)];
+        resultBox.textContent = randomName;
+
+        balls.forEach(ball => {
+          ball.style.left = Math.random() * 80 + "%";
+          ball.style.top = Math.random() * 75 + "%";
+        });
+
+        time += 100;
+
+        if (time >= 3000) {
+          clearInterval(shuffle);
+
+          const winner = names[Math.floor(Math.random() * names.length)];
+          resultBox.textContent = `당첨: ${winner}`;
+
+          balls.forEach(ball => {
+            ball.style.animationDuration = "1.2s";
+          });
+
+          isDrawing = false;
+        }
+      }, 100);
+    }
+
+    function resetAll() {
+      document.getElementById("countInput").value = 6;
+      makeNames();
+    }
+
+    window.addEventListener("resize", makeBalls);
+
+    makeNames();
+  </script>
+</body>
+</html>
