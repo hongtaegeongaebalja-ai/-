@@ -2,31 +2,30 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-<meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
-  <!-- 여기에 구글 소유권 meta 태그 넣기 -->
-  <!-- <meta name="google-site-verification" content="여기에코드" /> -->
-
+  <meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="뽑기 웹은 이름을 입력하고 로또 공 애니메이션처럼 랜덤으로 한 명을 뽑을 수 있는 무료 웹 도구입니다." />
-  <title>뽑기 웹 - 랜덤 이름 뽑기</title>
+  <meta name="description" content="뽑기 웹은 랜덤 이름 추첨, 발표 순서 정하기, 게임 벌칙 정하기 등에 사용할 수 있는 무료 랜덤 뽑기 사이트입니다. 모바일과 PC를 모두 지원합니다." />
+  <title>뽑기 웹 | 랜덤 이름 추첨기, 사다리 대체 뽑기 사이트</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       font-family: Arial, "Malgun Gothic", sans-serif;
       background: #ffffff;
       color: #111827;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     header {
       position: sticky;
       top: 0;
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
       z-index: 10;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
     }
 
     nav {
@@ -42,13 +41,19 @@
 
     nav strong {
       font-size: 22px;
+      color: #2563eb;
     }
 
     nav a {
-      color: #2563eb;
+      color: #111827;
       text-decoration: none;
       font-weight: bold;
       margin: 0 6px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: #2563eb;
     }
 
     .app {
@@ -59,26 +64,34 @@
 
     .hero {
       text-align: center;
-      padding: 32px 10px;
+      padding: 36px 10px 28px;
     }
 
     .hero h1 {
-      font-size: clamp(32px, 7vw, 56px);
+      font-size: clamp(32px, 7vw, 58px);
       margin: 0 0 10px;
     }
 
     .hero p {
       color: #4b5563;
       font-size: 17px;
+      max-width: 760px;
+      margin: auto;
     }
 
-    .panel, section {
+    .panel,
+    section {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
       border-radius: 22px;
-      padding: 20px;
+      padding: 22px;
       margin-bottom: 18px;
       box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 26px;
     }
 
     .controls {
@@ -89,7 +102,8 @@
       margin-bottom: 14px;
     }
 
-    input, button {
+    input,
+    button {
       border: none;
       border-radius: 14px;
       padding: 12px;
@@ -147,11 +161,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center;
       font-weight: bold;
       font-size: 13px;
       color: #111827;
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       animation: bounce 1.2s infinite ease-in-out;
+      padding: 4px;
+      word-break: keep-all;
     }
 
     @keyframes bounce {
@@ -174,9 +191,27 @@
       min-height: 90px;
     }
 
-    h2 {
-      margin-top: 0;
-      font-size: 26px;
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .info-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .ad-box {
+      background: #ffffff;
+      border: 2px dashed #cbd5e1;
+      color: #64748b;
+      text-align: center;
+      padding: 22px;
+      border-radius: 18px;
     }
 
     footer {
@@ -187,8 +222,22 @@
     }
 
     @media (max-width: 500px) {
+      .app {
+        padding: 10px;
+      }
+
       nav {
         justify-content: center;
+        text-align: center;
+      }
+
+      nav div {
+        width: 100%;
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 4px;
       }
 
       .machine {
@@ -201,7 +250,8 @@
         font-size: 11px;
       }
 
-      input, button {
+      input,
+      button {
         font-size: 15px;
       }
     }
@@ -216,6 +266,8 @@
         <a href="#game">뽑기</a>
         <a href="#about">소개</a>
         <a href="#how">사용법</a>
+        <a href="#fair">공정성</a>
+        <a href="#faq">FAQ</a>
         <a href="#privacy">개인정보</a>
         <a href="#terms">약관</a>
         <a href="#contact">문의</a>
@@ -226,12 +278,17 @@
   <main class="app">
     <div class="hero">
       <h1>랜덤 이름 뽑기</h1>
-      <p>이름을 입력하고 로또 공처럼 섞이는 애니메이션으로 한 명을 뽑아보세요.</p>
+      <p>
+        이름을 입력하고 로또 공처럼 섞이는 애니메이션으로 한 명을 뽑아보세요.
+        발표 순서, 청소 당번, 게임 벌칙, 모임 순서 정하기에 사용할 수 있는 무료 뽑기 웹입니다.
+      </p>
     </div>
 
     <div class="panel" id="game">
+      <h2>뽑기 시작하기</h2>
+
       <div class="controls">
-        <input id="countInput" type="number" min="2" max="30" value="6">
+        <input id="countInput" type="number" min="2" max="30" value="6" />
         <button onclick="makeNames()">이름칸 만들기</button>
         <button onclick="startDraw()">뽑기 시작</button>
         <button class="danger" onclick="resetAll()">초기화</button>
@@ -246,6 +303,13 @@
       </div>
     </div>
 
+    <section>
+      <h2>추천 콘텐츠</h2>
+      <div class="ad-box">
+        향후 광고 또는 추천 콘텐츠가 표시될 수 있는 영역입니다.
+      </div>
+    </section>
+
     <section id="about">
       <h2>뽑기 웹 소개</h2>
       <p>
@@ -254,20 +318,61 @@
       </p>
       <p>
         별도의 회원가입 없이 사용할 수 있으며, 스마트폰, 태블릿, 컴퓨터 화면에 맞게 자동으로 크기가 조절됩니다.
+        갤럭시 스마트폰, 아이폰, 아이패드, 갤럭시 탭 같은 다양한 기기에서 사용하기 좋게 반응형 UI로 제작되었습니다.
+      </p>
+      <p>
+        사용자는 원하는 인원 수만큼 이름을 입력할 수 있고, 로또 공처럼 움직이는 애니메이션을 통해 더욱 재미있게 결과를 확인할 수 있습니다.
+        본 서비스는 빠르고 간단한 랜덤 추첨 경험을 제공하는 것을 목표로 제작되었습니다.
       </p>
     </section>
 
     <section id="how">
       <h2>사용법</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>1. 인원 수 입력</h3>
+          <p>뽑기에 참여할 사람 수를 입력합니다. 최소 2명부터 최대 30명까지 입력할 수 있습니다.</p>
+        </div>
+        <div class="info-card">
+          <h3>2. 이름 입력</h3>
+          <p>이름칸 만들기 버튼을 누른 뒤 각 칸에 참여자 이름을 입력합니다.</p>
+        </div>
+        <div class="info-card">
+          <h3>3. 뽑기 시작</h3>
+          <p>뽑기 시작 버튼을 누르면 공들이 움직이다가 무작위로 한 명이 당첨됩니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="fair">
+      <h2>랜덤 뽑기 공정성 안내</h2>
       <p>
-        1. 뽑을 사람 수를 입력합니다.<br>
-        2. 이름칸 만들기 버튼을 누릅니다.<br>
-        3. 각 칸에 원하는 이름을 입력합니다.<br>
-        4. 뽑기 시작 버튼을 누르면 공들이 섞이다가 당첨자가 표시됩니다.
+        이 사이트의 뽑기 결과는 브라우저의 무작위 숫자 생성 기능을 사용해 정해집니다.
+        사용자가 입력한 이름 목록 중 하나를 무작위로 선택하며, 특정 이름을 일부러 유리하게 만들거나 불리하게 만들지 않습니다.
       </p>
       <p>
-        결과는 완전 랜덤으로 정해지며, 다시 뽑고 싶다면 뽑기 시작 버튼을 다시 누르면 됩니다.
+        다만 이 서비스는 재미와 편의를 위한 도구입니다.
+        중요한 계약, 금전 거래, 법적 판단처럼 높은 신뢰가 필요한 상황에서는 공식적인 추첨 방식이나 별도의 검증된 시스템을 사용하는 것이 좋습니다.
       </p>
+    </section>
+
+    <section id="faq">
+      <h2>자주 묻는 질문</h2>
+
+      <p><strong>Q. 회원가입이 필요한가요?</strong></p>
+      <p>A. 아니요. 회원가입 없이 바로 사용할 수 있습니다.</p>
+
+      <p><strong>Q. 모바일에서도 사용할 수 있나요?</strong></p>
+      <p>A. 네. 갤럭시 스마트폰, 아이폰, 아이패드, 태블릿, PC 화면을 지원합니다.</p>
+
+      <p><strong>Q. 결과는 저장되나요?</strong></p>
+      <p>A. 현재 입력한 이름과 결과는 서버에 저장되지 않습니다. 페이지를 새로고침하면 초기화될 수 있습니다.</p>
+
+      <p><strong>Q. 무료인가요?</strong></p>
+      <p>A. 네. 무료로 사용할 수 있습니다.</p>
+
+      <p><strong>Q. 사다리게임 대신 사용할 수 있나요?</strong></p>
+      <p>A. 네. 발표 순서, 벌칙, 당번 정하기처럼 사다리게임을 대신해 사용할 수 있습니다.</p>
     </section>
 
     <section id="privacy">
@@ -280,6 +385,10 @@
         본 사이트는 서비스 개선 및 광고 제공을 위해 향후 Google AdSense 같은 외부 광고 서비스를 사용할 수 있습니다.
         광고 서비스는 쿠키를 사용할 수 있으며, 사용자는 브라우저 설정에서 쿠키 사용을 제한할 수 있습니다.
       </p>
+      <p>
+        문의를 위해 사용자가 직접 이메일을 보내는 경우, 답변을 위해 이메일 주소와 문의 내용을 확인할 수 있습니다.
+        해당 정보는 문의 응답 목적 외에는 사용하지 않습니다.
+      </p>
     </section>
 
     <section id="terms">
@@ -290,19 +399,17 @@
       </p>
       <p>
         사이트는 무료로 제공되며, 기능은 필요에 따라 수정되거나 변경될 수 있습니다.
+        사용자는 본 서비스를 사용할 때 타인의 권리를 침해하거나 불법적인 목적으로 사용해서는 안 됩니다.
       </p>
     </section>
 
     <section id="contact">
       <h2>문의</h2>
       <p>
-        사이트 오류, 개선 요청, 문의 사항이 있다면 운영자에게 연락할 수 있습니다.
+        사이트 오류, 개선 요청, 문의 사항이 있다면 아래 이메일로 연락할 수 있습니다.
       </p>
       <p>
         이메일: hongtaegeongaebalja@gmail.com
-      </p>
-      <p>
-        위 이메일 부분은 네 이메일로 바꿔서 사용하면 됩니다.
       </p>
     </section>
   </main>
@@ -332,6 +439,7 @@
         const input = document.createElement("input");
         input.value = `${i + 1}번`;
         input.placeholder = "이름 입력";
+        input.addEventListener("input", makeBalls);
         nameList.appendChild(input);
       }
 
@@ -356,7 +464,7 @@
       inputs.forEach((input, index) => {
         const ball = document.createElement("div");
         ball.className = "ball";
-        ball.textContent = input.value || `${index + 1}번`;
+        ball.textContent = input.value.trim() || `${index + 1}번`;
 
         ball.style.left = Math.random() * 78 + "%";
         ball.style.top = Math.random() * 72 + "%";
@@ -371,6 +479,12 @@
       if (isDrawing) return;
 
       getNames();
+
+      if (names.length < 2) {
+        resultBox.textContent = "2명 이상 입력해 주세요";
+        return;
+      }
+
       makeBalls();
 
       isDrawing = true;
