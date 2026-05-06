@@ -1,537 +1,598 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="뽑기 웹은 랜덤 이름 추첨, 발표 순서 정하기, 게임 벌칙 정하기 등에 사용할 수 있는 무료 랜덤 뽑기 사이트입니다. 모바일과 PC를 모두 지원합니다." />
-  <title>뽑기 웹 | 랜덤 이름 추첨기, 사다리 대체 뽑기 사이트</title>
+<meta charset="UTF-8" />
+<meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>뽑기 웹 | 룰렛, 사다리게임, 팀나누기, 번호추첨</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, "Malgun Gothic", sans-serif;
-      background: #ffffff;
-      color: #111827;
-      line-height: 1.7;
-    }
+<meta name="description" content="랜덤 이름 뽑기, 룰렛, 사다리게임, 팀 나누기, 번호 추첨, 점심 메뉴 추천, 벌칙 정하기 기능을 제공하는 무료 랜덤 도구 사이트입니다." />
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-    }
+<style>
+*{
+  box-sizing:border-box;
+}
 
-    nav {
-      max-width: 1100px;
-      margin: auto;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+body{
+  margin:0;
+  font-family:Arial,"Malgun Gothic",sans-serif;
+  background:#ffffff;
+  color:#111827;
+}
 
-    nav strong {
-      font-size: 22px;
-      color: #2563eb;
-    }
+header{
+  position:sticky;
+  top:0;
+  background:white;
+  z-index:100;
+  border-bottom:1px solid #e5e7eb;
+}
 
-    nav a {
-      color: #111827;
-      text-decoration: none;
-      font-weight: bold;
-      margin: 0 6px;
-      font-size: 14px;
-    }
+nav{
+  max-width:1200px;
+  margin:auto;
+  padding:14px;
+}
 
-    nav a:hover {
-      color: #2563eb;
-    }
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  color:#2563eb;
+  text-align:center;
+  margin-bottom:10px;
+}
 
-    .app {
-      max-width: 1100px;
-      margin: auto;
-      padding: 16px;
-    }
+.menu{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
 
-    .hero {
-      text-align: center;
-      padding: 36px 10px 28px;
-    }
+.menu button{
+  border:none;
+  background:#2563eb;
+  color:white;
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
 
-    .hero h1 {
-      font-size: clamp(32px, 7vw, 58px);
-      margin: 0 0 10px;
-    }
+.menu button:hover{
+  background:#1d4ed8;
+}
 
-    .hero p {
-      color: #4b5563;
-      font-size: 17px;
-      max-width: 760px;
-      margin: auto;
-    }
+.app{
+  max-width:1200px;
+  margin:auto;
+  padding:16px;
+}
 
-    .panel,
-    section {
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 22px;
-      padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-    }
+.tool{
+  display:none;
+  background:#f8fafc;
+  border-radius:24px;
+  padding:22px;
+  margin-bottom:20px;
+  border:1px solid #e5e7eb;
+  box-shadow:0 8px 22px rgba(0,0,0,0.06);
+}
 
-    h2 {
-      margin-top: 0;
-      font-size: 26px;
-    }
+.tool.active{
+  display:block;
+}
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
+h1{
+  text-align:center;
+  font-size:clamp(32px,6vw,56px);
+}
 
-    input,
-    button {
-      border: none;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 16px;
-    }
+h2{
+  margin-top:0;
+  font-size:28px;
+}
 
-    input {
-      border: 1px solid #d1d5db;
-      background: white;
-      width: 100%;
-    }
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
 
-    button {
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+input,
+textarea,
+select,
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px;
+  font-size:16px;
+}
 
-    button:hover {
-      background: #1d4ed8;
-    }
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #d1d5db;
+  background:white;
+}
 
-    .danger {
-      background: #ef4444;
-    }
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
 
-    .danger:hover {
-      background: #dc2626;
-    }
+.action-btn{
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .name-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 10px;
-    }
+.action-btn:hover{
+  background:#1d4ed8;
+}
 
-    .machine {
-      position: relative;
-      height: 360px;
-      background: linear-gradient(#ffffff, #eef2ff);
-      border: 4px solid #2563eb;
-      border-radius: 30px;
-      overflow: hidden;
-      margin-top: 16px;
-    }
+.result{
+  margin-top:18px;
+  background:#fef3c7;
+  border:2px solid #f59e0b;
+  border-radius:18px;
+  padding:22px;
+  text-align:center;
+  font-size:clamp(22px,5vw,42px);
+  font-weight:bold;
+  min-height:90px;
+}
 
-    .ball {
-      position: absolute;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ffffff, #facc15 45%, #f97316);
-      border: 3px solid #ea580c;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-weight: bold;
-      font-size: 13px;
-      color: #111827;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      animation: bounce 1.2s infinite ease-in-out;
-      padding: 4px;
-      word-break: keep-all;
-    }
+.machine{
+  position:relative;
+  height:340px;
+  border-radius:28px;
+  border:4px solid #2563eb;
+  overflow:hidden;
+  background:linear-gradient(#fff,#eef2ff);
+  margin-top:18px;
+}
 
-    @keyframes bounce {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(20px, -30px) rotate(90deg); }
-      50% { transform: translate(-15px, 25px) rotate(180deg); }
-      75% { transform: translate(25px, 15px) rotate(270deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
-    }
+.ball{
+  position:absolute;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #fff, #facc15 45%, #f97316);
+  border:3px solid #ea580c;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:12px;
+  font-weight:bold;
+  padding:4px;
+  animation:bounce 1s infinite ease-in-out;
+}
 
-    .result-box {
-      margin-top: 16px;
-      padding: 22px;
-      border-radius: 20px;
-      background: #fef3c7;
-      border: 2px solid #f59e0b;
-      text-align: center;
-      font-size: clamp(24px, 6vw, 44px);
-      font-weight: bold;
-      min-height: 90px;
-    }
+@keyframes bounce{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(18px,-20px);}
+  50%{transform:translate(-15px,15px);}
+  75%{transform:translate(20px,12px);}
+  100%{transform:translate(0,0);}
+}
 
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 12px;
-    }
+.wheel{
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  margin:20px auto;
+  border:10px solid #2563eb;
+  position:relative;
+  overflow:hidden;
+  transition:transform 4s ease-out;
+  background:
+  conic-gradient(
+    #60a5fa 0deg 60deg,
+    #f472b6 60deg 120deg,
+    #facc15 120deg 180deg,
+    #34d399 180deg 240deg,
+    #fb7185 240deg 300deg,
+    #a78bfa 300deg 360deg
+  );
+}
 
-    .info-card {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 16px;
-    }
+.pointer{
+  width:0;
+  height:0;
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:35px solid #dc2626;
+  margin:auto;
+}
 
-    .ad-box {
-      background: #ffffff;
-      border: 2px dashed #cbd5e1;
-      color: #64748b;
-      text-align: center;
-      padding: 22px;
-      border-radius: 18px;
-    }
+.card{
+  background:white;
+  border-radius:18px;
+  border:1px solid #e5e7eb;
+  padding:18px;
+  margin-top:16px;
+}
 
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: #6b7280;
-      font-size: 14px;
-    }
+footer{
+  text-align:center;
+  color:#6b7280;
+  padding:30px;
+}
 
-    @media (max-width: 500px) {
-      .app {
-        padding: 10px;
-      }
+@media(max-width:600px){
 
-      nav {
-        justify-content: center;
-        text-align: center;
-      }
+  .wheel{
+    width:240px;
+    height:240px;
+  }
 
-      nav div {
-        width: 100%;
-      }
+  .machine{
+    height:280px;
+  }
 
-      nav a {
-        display: inline-block;
-        margin: 4px;
-      }
+  .ball{
+    width:58px;
+    height:58px;
+    font-size:10px;
+  }
 
-      .machine {
-        height: 300px;
-      }
-
-      .ball {
-        width: 58px;
-        height: 58px;
-        font-size: 11px;
-      }
-
-      input,
-      button {
-        font-size: 15px;
-      }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <nav>
-      <strong>뽑기 웹</strong>
-      <div>
-        <a href="#game">뽑기</a>
-        <a href="#about">소개</a>
-        <a href="#how">사용법</a>
-        <a href="#fair">공정성</a>
-        <a href="#faq">FAQ</a>
-        <a href="#privacy">개인정보</a>
-        <a href="#terms">약관</a>
-        <a href="#contact">문의</a>
-      </div>
-    </nav>
-  </header>
 
-  <main class="app">
-    <div class="hero">
-      <h1>랜덤 이름 뽑기</h1>
-      <p>
-        이름을 입력하고 로또 공처럼 섞이는 애니메이션으로 한 명을 뽑아보세요.
-        발표 순서, 청소 당번, 게임 벌칙, 모임 순서 정하기에 사용할 수 있는 무료 뽑기 웹입니다.
-      </p>
+<header>
+  <nav>
+    <div class="logo">뽑기 웹</div>
+
+    <div class="menu">
+      <button onclick="showTool('draw')">이름 뽑기</button>
+      <button onclick="showTool('roulette')">룰렛</button>
+      <button onclick="showTool('team')">팀 나누기</button>
+      <button onclick="showTool('number')">번호 추첨</button>
+      <button onclick="showTool('lunch')">점심 추천</button>
+      <button onclick="showTool('penalty')">벌칙 정하기</button>
+    </div>
+  </nav>
+</header>
+
+<div class="app">
+
+  <div class="tool active" id="draw">
+
+    <h1>랜덤 이름 뽑기</h1>
+
+    <div class="controls">
+      <input type="number" id="drawCount" min="2" max="30" value="6">
+      <button class="action-btn" onclick="makeDrawInputs()">이름칸 만들기</button>
+      <button class="action-btn" onclick="startDraw()">뽑기 시작</button>
     </div>
 
-    <div class="panel" id="game">
-      <h2>뽑기 시작하기</h2>
+    <div id="drawInputs"></div>
 
-      <div class="controls">
-        <input id="countInput" type="number" min="2" max="30" value="6" />
-        <button onclick="makeNames()">이름칸 만들기</button>
-        <button onclick="startDraw()">뽑기 시작</button>
-        <button class="danger" onclick="resetAll()">초기화</button>
-      </div>
+    <div class="machine" id="machine"></div>
 
-      <div id="nameList" class="name-list"></div>
-
-      <div class="machine" id="machine"></div>
-
-      <div class="result-box" id="resultBox">
-        결과가 여기에 나와요
-      </div>
+    <div class="result" id="drawResult">
+      결과가 여기에 나와요
     </div>
 
-    <section>
-      <h2>추천 콘텐츠</h2>
-      <div class="ad-box">
-        향후 광고 또는 추천 콘텐츠가 표시될 수 있는 영역입니다.
-      </div>
-    </section>
+  </div>
 
-    <section id="about">
-      <h2>뽑기 웹 소개</h2>
-      <p>
-        뽑기 웹은 여러 사람의 이름을 입력한 뒤 무작위로 한 명을 뽑을 수 있는 무료 웹 도구입니다.
-        친구들과 게임을 할 때, 발표 순서를 정할 때, 청소 당번을 정할 때, 간단한 추첨을 할 때 사용할 수 있습니다.
-      </p>
-      <p>
-        별도의 회원가입 없이 사용할 수 있으며, 스마트폰, 태블릿, 컴퓨터 화면에 맞게 자동으로 크기가 조절됩니다.
-        갤럭시 스마트폰, 아이폰, 아이패드, 갤럭시 탭 같은 다양한 기기에서 사용하기 좋게 반응형 UI로 제작되었습니다.
-      </p>
-      <p>
-        사용자는 원하는 인원 수만큼 이름을 입력할 수 있고, 로또 공처럼 움직이는 애니메이션을 통해 더욱 재미있게 결과를 확인할 수 있습니다.
-        본 서비스는 빠르고 간단한 랜덤 추첨 경험을 제공하는 것을 목표로 제작되었습니다.
-      </p>
-    </section>
+  <div class="tool" id="roulette">
 
-    <section id="how">
-      <h2>사용법</h2>
-      <div class="info-grid">
-        <div class="info-card">
-          <h3>1. 인원 수 입력</h3>
-          <p>뽑기에 참여할 사람 수를 입력합니다. 최소 2명부터 최대 30명까지 입력할 수 있습니다.</p>
-        </div>
-        <div class="info-card">
-          <h3>2. 이름 입력</h3>
-          <p>이름칸 만들기 버튼을 누른 뒤 각 칸에 참여자 이름을 입력합니다.</p>
-        </div>
-        <div class="info-card">
-          <h3>3. 뽑기 시작</h3>
-          <p>뽑기 시작 버튼을 누르면 공들이 움직이다가 무작위로 한 명이 당첨됩니다.</p>
-        </div>
-      </div>
-    </section>
+    <h2>룰렛</h2>
 
-    <section id="fair">
-      <h2>랜덤 뽑기 공정성 안내</h2>
-      <p>
-        이 사이트의 뽑기 결과는 브라우저의 무작위 숫자 생성 기능을 사용해 정해집니다.
-        사용자가 입력한 이름 목록 중 하나를 무작위로 선택하며, 특정 이름을 일부러 유리하게 만들거나 불리하게 만들지 않습니다.
-      </p>
-      <p>
-        다만 이 서비스는 재미와 편의를 위한 도구입니다.
-        중요한 계약, 금전 거래, 법적 판단처럼 높은 신뢰가 필요한 상황에서는 공식적인 추첨 방식이나 별도의 검증된 시스템을 사용하는 것이 좋습니다.
-      </p>
-    </section>
+    <textarea id="rouletteInput" placeholder="항목을 한 줄씩 입력하세요&#10;예시&#10;치킨&#10;피자&#10;햄버거"></textarea>
 
-    <section id="faq">
-      <h2>자주 묻는 질문</h2>
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel"></div>
 
-      <p><strong>Q. 회원가입이 필요한가요?</strong></p>
-      <p>A. 아니요. 회원가입 없이 바로 사용할 수 있습니다.</p>
+    <button class="action-btn" onclick="spinRoulette()">룰렛 돌리기</button>
 
-      <p><strong>Q. 모바일에서도 사용할 수 있나요?</strong></p>
-      <p>A. 네. 갤럭시 스마트폰, 아이폰, 아이패드, 태블릿, PC 화면을 지원합니다.</p>
+    <div class="result" id="rouletteResult">
+      룰렛 결과
+    </div>
 
-      <p><strong>Q. 결과는 저장되나요?</strong></p>
-      <p>A. 현재 입력한 이름과 결과는 서버에 저장되지 않습니다. 페이지를 새로고침하면 초기화될 수 있습니다.</p>
+  </div>
 
-      <p><strong>Q. 무료인가요?</strong></p>
-      <p>A. 네. 무료로 사용할 수 있습니다.</p>
+  <div class="tool" id="team">
 
-      <p><strong>Q. 사다리게임 대신 사용할 수 있나요?</strong></p>
-      <p>A. 네. 발표 순서, 벌칙, 당번 정하기처럼 사다리게임을 대신해 사용할 수 있습니다.</p>
-    </section>
+    <h2>팀 나누기</h2>
 
-    <section id="privacy">
-      <h2>개인정보처리방침</h2>
-      <p>
-        뽑기 웹은 사용자의 이름 입력값을 서버에 저장하지 않습니다.
-        입력한 이름은 현재 브라우저 화면에서만 사용되며, 페이지를 새로고침하거나 닫으면 사라질 수 있습니다.
-      </p>
-      <p>
-        본 사이트는 서비스 개선 및 광고 제공을 위해 향후 Google AdSense 같은 외부 광고 서비스를 사용할 수 있습니다.
-        광고 서비스는 쿠키를 사용할 수 있으며, 사용자는 브라우저 설정에서 쿠키 사용을 제한할 수 있습니다.
-      </p>
-      <p>
-        문의를 위해 사용자가 직접 이메일을 보내는 경우, 답변을 위해 이메일 주소와 문의 내용을 확인할 수 있습니다.
-        해당 정보는 문의 응답 목적 외에는 사용하지 않습니다.
-      </p>
-    </section>
+    <textarea id="teamInput" placeholder="이름을 한 줄씩 입력"></textarea>
 
-    <section id="terms">
-      <h2>이용약관</h2>
-      <p>
-        뽑기 웹은 재미와 편의를 위한 랜덤 추첨 도구입니다.
-        본 사이트의 결과는 무작위로 생성되며, 중요한 계약, 금전 거래, 법적 판단 등의 목적으로 사용하는 것은 권장하지 않습니다.
-      </p>
-      <p>
-        사이트는 무료로 제공되며, 기능은 필요에 따라 수정되거나 변경될 수 있습니다.
-        사용자는 본 서비스를 사용할 때 타인의 권리를 침해하거나 불법적인 목적으로 사용해서는 안 됩니다.
-      </p>
-    </section>
+    <select id="teamCount">
+      <option value="2">2팀</option>
+      <option value="3">3팀</option>
+      <option value="4">4팀</option>
+    </select>
 
-    <section id="contact">
-      <h2>문의</h2>
-      <p>
-        사이트 오류, 개선 요청, 문의 사항이 있다면 아래 이메일로 연락할 수 있습니다.
-      </p>
-      <p>
-        이메일: hongtaegeongaebalja@gmail.com
-      </p>
-    </section>
-  </main>
+    <button class="action-btn" onclick="makeTeams()">팀 나누기</button>
 
-  <footer>
-    © 2026 뽑기 웹. All rights reserved.
-  </footer>
+    <div class="card" id="teamResult"></div>
 
-  <script>
-    const nameList = document.getElementById("nameList");
-    const machine = document.getElementById("machine");
-    const resultBox = document.getElementById("resultBox");
+  </div>
 
-    let names = [];
-    let isDrawing = false;
+  <div class="tool" id="number">
 
-    function makeNames() {
-      let count = Number(document.getElementById("countInput").value);
+    <h2>번호 추첨</h2>
 
-      if (count < 2) count = 2;
-      if (count > 30) count = 30;
+    <div class="controls">
+      <input type="number" id="minNum" placeholder="최소 숫자" value="1">
+      <input type="number" id="maxNum" placeholder="최대 숫자" value="100">
+    </div>
 
-      document.getElementById("countInput").value = count;
-      nameList.innerHTML = "";
+    <button class="action-btn" onclick="drawNumber()">번호 뽑기</button>
 
-      for (let i = 0; i < count; i++) {
-        const input = document.createElement("input");
-        input.value = `${i + 1}번`;
-        input.placeholder = "이름 입력";
-        input.addEventListener("input", makeBalls);
-        nameList.appendChild(input);
-      }
+    <div class="result" id="numberResult">
+      숫자 결과
+    </div>
 
-      makeBalls();
-      resultBox.textContent = "결과가 여기에 나와요";
+  </div>
+
+  <div class="tool" id="lunch">
+
+    <h2>점심 메뉴 추천</h2>
+
+    <textarea id="lunchInput">치킨
+피자
+햄버거
+김치찌개
+돈까스
+마라탕</textarea>
+
+    <button class="action-btn" onclick="pickLunch()">추천 받기</button>
+
+    <div class="result" id="lunchResult">
+      오늘 점심은?
+    </div>
+
+  </div>
+
+  <div class="tool" id="penalty">
+
+    <h2>벌칙 정하기</h2>
+
+    <textarea id="penaltyInput">노래 부르기
+춤추기
+물 마시기
+애교하기
+팔굽혀펴기</textarea>
+
+    <button class="action-btn" onclick="pickPenalty()">벌칙 뽑기</button>
+
+    <div class="result" id="penaltyResult">
+      벌칙 결과
+    </div>
+
+  </div>
+
+  <div class="tool">
+
+    <h2>사이트 소개</h2>
+
+    <p>
+      뽑기 웹은 랜덤 이름 추첨, 룰렛, 팀 나누기, 번호 추첨, 점심 메뉴 추천, 벌칙 정하기 기능을 제공하는 무료 랜덤 도구 사이트입니다.
+    </p>
+
+    <p>
+      모바일, 태블릿, 아이폰, 아이패드, PC 화면을 모두 지원하는 반응형 웹사이트입니다.
+    </p>
+
+  </div>
+
+</div>
+
+<footer>
+© 2026 뽑기 웹. All rights reserved.
+</footer>
+
+<script>
+
+function showTool(id){
+
+  document.querySelectorAll(".tool").forEach(tool=>{
+    tool.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+}
+
+const machine=document.getElementById("machine");
+
+function makeDrawInputs(){
+
+  const count=Number(document.getElementById("drawCount").value);
+
+  const area=document.getElementById("drawInputs");
+
+  area.innerHTML="";
+
+  for(let i=0;i<count;i++){
+
+    const input=document.createElement("input");
+
+    input.placeholder=`${i+1}번 이름`;
+
+    input.value=`${i+1}번`;
+
+    input.style.marginBottom="10px";
+
+    area.appendChild(input);
+  }
+
+  makeBalls();
+}
+
+function makeBalls(){
+
+  machine.innerHTML="";
+
+  const inputs=document.querySelectorAll("#drawInputs input");
+
+  inputs.forEach(input=>{
+
+    const ball=document.createElement("div");
+
+    ball.className="ball";
+
+    ball.textContent=input.value;
+
+    ball.style.left=Math.random()*80+"%";
+    ball.style.top=Math.random()*70+"%";
+
+    machine.appendChild(ball);
+  });
+}
+
+function startDraw(){
+
+  const inputs=document.querySelectorAll("#drawInputs input");
+
+  const names=[];
+
+  inputs.forEach(input=>{
+    names.push(input.value);
+  });
+
+  if(names.length<2){
+    return;
+  }
+
+  makeBalls();
+
+  const result=document.getElementById("drawResult");
+
+  let time=0;
+
+  const shuffle=setInterval(()=>{
+
+    const randomName=names[Math.floor(Math.random()*names.length)];
+
+    result.textContent=randomName;
+
+    document.querySelectorAll(".ball").forEach(ball=>{
+
+      ball.style.left=Math.random()*80+"%";
+      ball.style.top=Math.random()*70+"%";
+
+    });
+
+    time+=100;
+
+    if(time>=3000){
+
+      clearInterval(shuffle);
+
+      const winner=names[Math.floor(Math.random()*names.length)];
+
+      result.textContent="당첨: "+winner;
     }
 
-    function getNames() {
-      const inputs = nameList.querySelectorAll("input");
-      names = [];
+  },100);
+}
 
-      inputs.forEach((input, index) => {
-        names.push(input.value.trim() || `${index + 1}번`);
-      });
-    }
+function spinRoulette(){
 
-    function makeBalls() {
-      machine.innerHTML = "";
+  const items=document.getElementById("rouletteInput")
+  .value
+  .split("\n")
+  .filter(v=>v.trim()!="");
 
-      const inputs = nameList.querySelectorAll("input");
+  if(items.length===0)return;
 
-      inputs.forEach((input, index) => {
-        const ball = document.createElement("div");
-        ball.className = "ball";
-        ball.textContent = input.value.trim() || `${index + 1}번`;
+  const wheel=document.getElementById("wheel");
 
-        ball.style.left = Math.random() * 78 + "%";
-        ball.style.top = Math.random() * 72 + "%";
-        ball.style.animationDelay = Math.random() + "s";
-        ball.style.animationDuration = (0.8 + Math.random() * 0.8) + "s";
+  const deg=3600+Math.random()*360;
 
-        machine.appendChild(ball);
-      });
-    }
+  wheel.style.transform=`rotate(${deg}deg)`;
 
-    function startDraw() {
-      if (isDrawing) return;
+  setTimeout(()=>{
 
-      getNames();
+    const result=items[Math.floor(Math.random()*items.length)];
 
-      if (names.length < 2) {
-        resultBox.textContent = "2명 이상 입력해 주세요";
-        return;
-      }
+    document.getElementById("rouletteResult").textContent=result;
 
-      makeBalls();
+  },4000);
+}
 
-      isDrawing = true;
-      resultBox.textContent = "섞는 중...";
+function makeTeams(){
 
-      const balls = document.querySelectorAll(".ball");
+  const names=document.getElementById("teamInput")
+  .value
+  .split("\n")
+  .filter(v=>v.trim()!="");
 
-      balls.forEach(ball => {
-        ball.style.animationDuration = "0.35s";
-      });
+  const count=Number(document.getElementById("teamCount").value);
 
-      let time = 0;
+  names.sort(()=>Math.random()-0.5);
 
-      const shuffle = setInterval(() => {
-        const randomName = names[Math.floor(Math.random() * names.length)];
-        resultBox.textContent = randomName;
+  const teams=[];
 
-        balls.forEach(ball => {
-          ball.style.left = Math.random() * 78 + "%";
-          ball.style.top = Math.random() * 72 + "%";
-        });
+  for(let i=0;i<count;i++){
+    teams.push([]);
+  }
 
-        time += 100;
+  names.forEach((name,index)=>{
+    teams[index%count].push(name);
+  });
 
-        if (time >= 3000) {
-          clearInterval(shuffle);
+  let html="";
 
-          const winner = names[Math.floor(Math.random() * names.length)];
-          resultBox.textContent = `당첨: ${winner}`;
+  teams.forEach((team,index)=>{
 
-          balls.forEach(ball => {
-            ball.style.animationDuration = "1.2s";
-          });
+    html+=`<h3>${index+1}팀</h3><p>${team.join(", ")}</p>`;
 
-          isDrawing = false;
-        }
-      }, 100);
-    }
+  });
 
-    function resetAll() {
-      document.getElementById("countInput").value = 6;
-      makeNames();
-    }
+  document.getElementById("teamResult").innerHTML=html;
+}
 
-    window.addEventListener("resize", makeBalls);
+function drawNumber(){
 
-    makeNames();
-  </script>
+  const min=Number(document.getElementById("minNum").value);
+
+  const max=Number(document.getElementById("maxNum").value);
+
+  const num=Math.floor(Math.random()*(max-min+1))+min;
+
+  document.getElementById("numberResult").textContent=num;
+}
+
+function pickLunch(){
+
+  const foods=document.getElementById("lunchInput")
+  .value
+  .split("\n")
+  .filter(v=>v.trim()!="");
+
+  const result=foods[Math.floor(Math.random()*foods.length)];
+
+  document.getElementById("lunchResult").textContent=result;
+}
+
+function pickPenalty(){
+
+  const items=document.getElementById("penaltyInput")
+  .value
+  .split("\n")
+  .filter(v=>v.trim()!="");
+
+  const result=items[Math.floor(Math.random()*items.length)];
+
+  document.getElementById("penaltyResult").textContent=result;
+}
+
+makeDrawInputs();
+
+</script>
+
 </body>
 </html>
