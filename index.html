@@ -4,595 +4,263 @@
 <meta charset="UTF-8" />
 <meta name="google-site-verification" content="DgGIs6LN5vvoAIWMtcM1bHYY7o02GwodivpZzrHWZ1E" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>뽑기 웹 | 룰렛, 사다리게임, 팀나누기, 번호추첨</title>
-
-<meta name="description" content="랜덤 이름 뽑기, 룰렛, 사다리게임, 팀 나누기, 번호 추첨, 점심 메뉴 추천, 벌칙 정하기 기능을 제공하는 무료 랜덤 도구 사이트입니다." />
+<meta name="description" content="뽑기 웹은 이름 뽑기, 룰렛, 번호 추첨, 벌칙 정하기를 제공하는 무료 랜덤 도구 사이트입니다." />
+<title>뽑기 웹 | 이름 뽑기, 룰렛, 번호 추첨, 벌칙 정하기</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  font-family:Arial,"Malgun Gothic",sans-serif;
-  background:#ffffff;
-  color:#111827;
-}
-
-header{
-  position:sticky;
-  top:0;
-  background:white;
-  z-index:100;
-  border-bottom:1px solid #e5e7eb;
-}
-
-nav{
-  max-width:1200px;
-  margin:auto;
-  padding:14px;
-}
-
-.logo{
-  font-size:28px;
-  font-weight:bold;
-  color:#2563eb;
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.menu{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.menu button{
-  border:none;
-  background:#2563eb;
-  color:white;
-  padding:10px 14px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.menu button:hover{
-  background:#1d4ed8;
-}
-
-.app{
-  max-width:1200px;
-  margin:auto;
-  padding:16px;
-}
-
-.tool{
-  display:none;
-  background:#f8fafc;
-  border-radius:24px;
-  padding:22px;
-  margin-bottom:20px;
-  border:1px solid #e5e7eb;
-  box-shadow:0 8px 22px rgba(0,0,0,0.06);
-}
-
-.tool.active{
-  display:block;
-}
-
-h1{
-  text-align:center;
-  font-size:clamp(32px,6vw,56px);
-}
-
-h2{
-  margin-top:0;
-  font-size:28px;
-}
-
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-
-input,
-textarea,
-select,
-button{
-  border:none;
-  border-radius:14px;
-  padding:12px;
-  font-size:16px;
-}
-
-input,
-textarea,
-select{
-  width:100%;
-  border:1px solid #d1d5db;
-  background:white;
-}
-
-textarea{
-  min-height:120px;
-  resize:vertical;
-}
-
-.action-btn{
-  background:#2563eb;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.action-btn:hover{
-  background:#1d4ed8;
-}
-
-.result{
-  margin-top:18px;
-  background:#fef3c7;
-  border:2px solid #f59e0b;
-  border-radius:18px;
-  padding:22px;
-  text-align:center;
-  font-size:clamp(22px,5vw,42px);
-  font-weight:bold;
-  min-height:90px;
-}
-
-.machine{
-  position:relative;
-  height:340px;
-  border-radius:28px;
-  border:4px solid #2563eb;
-  overflow:hidden;
-  background:linear-gradient(#fff,#eef2ff);
-  margin-top:18px;
-}
-
-.ball{
-  position:absolute;
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #fff, #facc15 45%, #f97316);
-  border:3px solid #ea580c;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:12px;
-  font-weight:bold;
-  padding:4px;
-  animation:bounce 1s infinite ease-in-out;
-}
-
-@keyframes bounce{
-  0%{transform:translate(0,0);}
-  25%{transform:translate(18px,-20px);}
-  50%{transform:translate(-15px,15px);}
-  75%{transform:translate(20px,12px);}
-  100%{transform:translate(0,0);}
-}
-
-.wheel{
-  width:300px;
-  height:300px;
-  border-radius:50%;
-  margin:20px auto;
-  border:10px solid #2563eb;
-  position:relative;
-  overflow:hidden;
-  transition:transform 4s ease-out;
-  background:
-  conic-gradient(
-    #60a5fa 0deg 60deg,
-    #f472b6 60deg 120deg,
-    #facc15 120deg 180deg,
-    #34d399 180deg 240deg,
-    #fb7185 240deg 300deg,
-    #a78bfa 300deg 360deg
-  );
-}
-
-.pointer{
-  width:0;
-  height:0;
-  border-left:18px solid transparent;
-  border-right:18px solid transparent;
-  border-top:35px solid #dc2626;
-  margin:auto;
-}
-
-.card{
-  background:white;
-  border-radius:18px;
-  border:1px solid #e5e7eb;
-  padding:18px;
-  margin-top:16px;
-}
-
-footer{
-  text-align:center;
-  color:#6b7280;
-  padding:30px;
-}
-
-@media(max-width:600px){
-
-  .wheel{
-    width:240px;
-    height:240px;
-  }
-
-  .machine{
-    height:280px;
-  }
-
-  .ball{
-    width:58px;
-    height:58px;
-    font-size:10px;
-  }
-
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Malgun Gothic",sans-serif;background:white;color:#111827;line-height:1.7}
+header{position:sticky;top:0;background:white;z-index:100;border-bottom:1px solid #e5e7eb}
+nav{max-width:1200px;margin:auto;padding:14px;text-align:center}
+.logo{font-size:28px;font-weight:bold;color:#2563eb;margin-bottom:10px}
+.menu{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.menu button{border:none;background:#2563eb;color:white;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:bold}
+.menu button:hover{background:#1d4ed8}
+.app{max-width:1200px;margin:auto;padding:16px}
+.tool,section{background:#f8fafc;border-radius:24px;padding:22px;margin-bottom:20px;border:1px solid #e5e7eb;box-shadow:0 8px 22px rgba(0,0,0,.06)}
+.tool{display:none}
+.tool.active{display:block}
+h1{text-align:center;font-size:clamp(32px,6vw,56px)}
+h2{margin-top:0;font-size:28px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+input,textarea,button{border:none;border-radius:14px;padding:12px;font-size:16px}
+input,textarea{width:100%;border:1px solid #d1d5db;background:white}
+textarea{min-height:120px;resize:vertical}
+.action-btn{background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+.result{margin-top:18px;background:#fef3c7;border:2px solid #f59e0b;border-radius:18px;padding:22px;text-align:center;font-size:clamp(22px,5vw,42px);font-weight:bold;min-height:90px}
+.machine{position:relative;height:340px;border-radius:28px;border:4px solid #2563eb;overflow:hidden;background:linear-gradient(#fff,#eef2ff);margin-top:18px}
+.ball{position:absolute;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#facc15 45%,#f97316);border:3px solid #ea580c;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:bold;padding:4px;animation:bounce 1s infinite ease-in-out}
+@keyframes bounce{0%{transform:translate(0,0)}25%{transform:translate(18px,-20px)}50%{transform:translate(-15px,15px)}75%{transform:translate(20px,12px)}100%{transform:translate(0,0)}}
+.wheel{width:300px;height:300px;border-radius:50%;margin:20px auto;border:10px solid #2563eb;transition:transform 4s ease-out;background:conic-gradient(#60a5fa 0deg 60deg,#f472b6 60deg 120deg,#facc15 120deg 180deg,#34d399 180deg 240deg,#fb7185 240deg 300deg,#a78bfa 300deg 360deg)}
+.pointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:35px solid #dc2626;margin:auto}
+.ad-box{background:white;border:2px dashed #cbd5e1;color:#64748b;text-align:center;padding:24px;border-radius:18px}
+footer{text-align:center;color:#6b7280;padding:30px}
+@media(max-width:600px){.wheel{width:240px;height:240px}.machine{height:280px}.ball{width:58px;height:58px;font-size:10px}}
 </style>
 </head>
 
 <body>
-
 <header>
-  <nav>
-    <div class="logo">뽑기 웹</div>
-
-    <div class="menu">
-      <button onclick="showTool('draw')">이름 뽑기</button>
-      <button onclick="showTool('roulette')">룰렛</button>
-      <button onclick="showTool('team')">팀 나누기</button>
-      <button onclick="showTool('number')">번호 추첨</button>
-      <button onclick="showTool('lunch')">점심 추천</button>
-      <button onclick="showTool('penalty')">벌칙 정하기</button>
-    </div>
-  </nav>
+<nav>
+  <div class="logo">뽑기 웹</div>
+  <div class="menu">
+    <button onclick="showTool('draw')">이름 뽑기</button>
+    <button onclick="showTool('roulette')">룰렛</button>
+    <button onclick="showTool('number')">번호 추첨</button>
+    <button onclick="showTool('penalty')">벌칙 정하기</button>
+  </div>
+</nav>
 </header>
 
 <div class="app">
 
   <div class="tool active" id="draw">
-
     <h1>랜덤 이름 뽑기</h1>
-
     <div class="controls">
       <input type="number" id="drawCount" min="2" max="30" value="6">
       <button class="action-btn" onclick="makeDrawInputs()">이름칸 만들기</button>
       <button class="action-btn" onclick="startDraw()">뽑기 시작</button>
     </div>
-
     <div id="drawInputs"></div>
-
     <div class="machine" id="machine"></div>
-
-    <div class="result" id="drawResult">
-      결과가 여기에 나와요
-    </div>
-
+    <div class="result" id="drawResult">결과가 여기에 나와요</div>
   </div>
 
   <div class="tool" id="roulette">
-
     <h2>룰렛</h2>
-
-    <textarea id="rouletteInput" placeholder="항목을 한 줄씩 입력하세요&#10;예시&#10;치킨&#10;피자&#10;햄버거"></textarea>
-
+    <textarea id="rouletteInput">치킨
+피자
+햄버거
+돈까스
+김치찌개
+라면</textarea>
     <div class="pointer"></div>
     <div class="wheel" id="wheel"></div>
-
     <button class="action-btn" onclick="spinRoulette()">룰렛 돌리기</button>
-
-    <div class="result" id="rouletteResult">
-      룰렛 결과
-    </div>
-
-  </div>
-
-  <div class="tool" id="team">
-
-    <h2>팀 나누기</h2>
-
-    <textarea id="teamInput" placeholder="이름을 한 줄씩 입력"></textarea>
-
-    <select id="teamCount">
-      <option value="2">2팀</option>
-      <option value="3">3팀</option>
-      <option value="4">4팀</option>
-    </select>
-
-    <button class="action-btn" onclick="makeTeams()">팀 나누기</button>
-
-    <div class="card" id="teamResult"></div>
-
+    <div class="result" id="rouletteResult">룰렛 결과</div>
   </div>
 
   <div class="tool" id="number">
-
     <h2>번호 추첨</h2>
-
     <div class="controls">
-      <input type="number" id="minNum" placeholder="최소 숫자" value="1">
-      <input type="number" id="maxNum" placeholder="최대 숫자" value="100">
+      <input type="number" id="minNum" value="1">
+      <input type="number" id="maxNum" value="100">
     </div>
-
     <button class="action-btn" onclick="drawNumber()">번호 뽑기</button>
-
-    <div class="result" id="numberResult">
-      숫자 결과
-    </div>
-
-  </div>
-
-  <div class="tool" id="lunch">
-
-    <h2>점심 메뉴 추천</h2>
-
-    <textarea id="lunchInput">치킨
-피자
-햄버거
-김치찌개
-돈까스
-마라탕</textarea>
-
-    <button class="action-btn" onclick="pickLunch()">추천 받기</button>
-
-    <div class="result" id="lunchResult">
-      오늘 점심은?
-    </div>
-
+    <div class="result" id="numberResult">숫자 결과</div>
   </div>
 
   <div class="tool" id="penalty">
-
     <h2>벌칙 정하기</h2>
-
     <textarea id="penaltyInput">노래 부르기
 춤추기
 물 마시기
 애교하기
-팔굽혀펴기</textarea>
-
+팔굽혀펴기
+칭찬 한마디 하기</textarea>
     <button class="action-btn" onclick="pickPenalty()">벌칙 뽑기</button>
+    <div class="result" id="penaltyResult">벌칙 결과</div>
+  </div>
 
-    <div class="result" id="penaltyResult">
-      벌칙 결과
+  <section>
+    <h2>추천 콘텐츠</h2>
+    <div class="ad-box">
+      향후 광고 또는 추천 콘텐츠가 표시될 수 있는 영역입니다.
     </div>
+  </section>
 
-  </div>
-
-  <div class="tool">
-
-    <h2>사이트 소개</h2>
-
+  <section>
+    <h2>뽑기 웹 소개</h2>
     <p>
-      뽑기 웹은 랜덤 이름 추첨, 룰렛, 팀 나누기, 번호 추첨, 점심 메뉴 추천, 벌칙 정하기 기능을 제공하는 무료 랜덤 도구 사이트입니다.
+      뽑기 웹은 이름 뽑기, 룰렛, 번호 추첨, 벌칙 정하기 기능을 제공하는 무료 랜덤 도구 사이트입니다.
+      학교, 회사, 친구 모임, 가족 모임에서 발표 순서나 간단한 게임 결과를 정할 때 사용할 수 있습니다.
     </p>
-
     <p>
-      모바일, 태블릿, 아이폰, 아이패드, PC 화면을 모두 지원하는 반응형 웹사이트입니다.
+      별도의 회원가입 없이 바로 사용할 수 있으며, 갤럭시 스마트폰, 아이폰, 갤럭시 탭, 아이패드, PC 화면에 맞게 자동으로 조절되는 반응형 웹으로 제작되었습니다.
     </p>
+  </section>
 
-  </div>
+  <section>
+    <h2>사용 방법</h2>
+    <p>
+      원하는 기능을 메뉴에서 선택한 뒤 이름, 항목, 숫자 범위, 벌칙 내용을 입력하고 버튼을 누르면 결과가 무작위로 표시됩니다.
+      단순한 선택을 빠르고 재미있게 할 수 있도록 만들어졌습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>공정성 안내</h2>
+    <p>
+      이 사이트의 결과는 브라우저의 무작위 숫자 생성 기능을 사용해 정해집니다.
+      특정 이름이나 항목을 일부러 유리하게 만들지 않으며, 입력된 목록 안에서 무작위로 결과를 선택합니다.
+    </p>
+    <p>
+      다만 본 서비스는 재미와 편의를 위한 도구입니다. 금전 거래, 법적 판단, 중요한 계약처럼 높은 신뢰가 필요한 상황에서는 공식적인 추첨 방식을 사용하는 것이 좋습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>자주 묻는 질문</h2>
+    <p><strong>Q. 회원가입이 필요한가요?</strong></p>
+    <p>A. 아니요. 회원가입 없이 사용할 수 있습니다.</p>
+    <p><strong>Q. 모바일에서도 되나요?</strong></p>
+    <p>A. 네. 스마트폰, 태블릿, PC에서 사용할 수 있습니다.</p>
+    <p><strong>Q. 무료인가요?</strong></p>
+    <p>A. 네. 무료로 사용할 수 있습니다.</p>
+    <p><strong>Q. 입력한 이름이 저장되나요?</strong></p>
+    <p>A. 서버에 저장하지 않습니다. 현재 브라우저 화면에서만 사용됩니다.</p>
+  </section>
+
+  <section>
+    <h2>개인정보처리방침</h2>
+    <p>
+      뽑기 웹은 사용자가 입력한 이름, 항목, 번호, 벌칙 내용을 서버에 저장하지 않습니다.
+      입력한 정보는 현재 브라우저 화면에서 기능 실행을 위해서만 사용됩니다.
+    </p>
+    <p>
+      본 사이트는 향후 Google AdSense 같은 광고 서비스를 사용할 수 있습니다.
+      광고 서비스는 맞춤 광고 제공을 위해 쿠키를 사용할 수 있으며, 사용자는 브라우저 설정에서 쿠키 사용을 제한할 수 있습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>이용약관</h2>
+    <p>
+      뽑기 웹은 무료 랜덤 도구 사이트이며, 사용자는 본 서비스를 불법적인 목적이나 타인의 권리를 침해하는 방식으로 사용해서는 안 됩니다.
+      사이트 기능은 필요에 따라 변경되거나 개선될 수 있습니다.
+    </p>
+  </section>
+
+  <section>
+    <h2>문의</h2>
+    <p>사이트 오류나 개선 요청은 아래 이메일로 문의할 수 있습니다.</p>
+    <p>이메일: hongtaegeongaebalja@gmail.com</p>
+  </section>
 
 </div>
 
-<footer>
-© 2026 뽑기 웹. All rights reserved.
-</footer>
+<footer>© 2026 뽑기 웹. All rights reserved.</footer>
 
 <script>
-
 function showTool(id){
-
-  document.querySelectorAll(".tool").forEach(tool=>{
-    tool.classList.remove("active");
-  });
-
+  document.querySelectorAll(".tool").forEach(t=>t.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
 const machine=document.getElementById("machine");
 
 function makeDrawInputs(){
-
   const count=Number(document.getElementById("drawCount").value);
-
   const area=document.getElementById("drawInputs");
-
   area.innerHTML="";
-
   for(let i=0;i<count;i++){
-
     const input=document.createElement("input");
-
     input.placeholder=`${i+1}번 이름`;
-
     input.value=`${i+1}번`;
-
     input.style.marginBottom="10px";
-
+    input.addEventListener("input",makeBalls);
     area.appendChild(input);
   }
-
   makeBalls();
 }
 
 function makeBalls(){
-
   machine.innerHTML="";
-
-  const inputs=document.querySelectorAll("#drawInputs input");
-
-  inputs.forEach(input=>{
-
+  document.querySelectorAll("#drawInputs input").forEach(input=>{
     const ball=document.createElement("div");
-
     ball.className="ball";
-
     ball.textContent=input.value;
-
     ball.style.left=Math.random()*80+"%";
     ball.style.top=Math.random()*70+"%";
-
     machine.appendChild(ball);
   });
 }
 
 function startDraw(){
-
-  const inputs=document.querySelectorAll("#drawInputs input");
-
-  const names=[];
-
-  inputs.forEach(input=>{
-    names.push(input.value);
-  });
-
-  if(names.length<2){
-    return;
-  }
-
+  const names=[...document.querySelectorAll("#drawInputs input")].map(i=>i.value).filter(Boolean);
+  if(names.length<2)return;
   makeBalls();
-
   const result=document.getElementById("drawResult");
-
   let time=0;
-
   const shuffle=setInterval(()=>{
-
-    const randomName=names[Math.floor(Math.random()*names.length)];
-
-    result.textContent=randomName;
-
+    result.textContent=names[Math.floor(Math.random()*names.length)];
     document.querySelectorAll(".ball").forEach(ball=>{
-
       ball.style.left=Math.random()*80+"%";
       ball.style.top=Math.random()*70+"%";
-
     });
-
     time+=100;
-
     if(time>=3000){
-
       clearInterval(shuffle);
-
-      const winner=names[Math.floor(Math.random()*names.length)];
-
-      result.textContent="당첨: "+winner;
+      result.textContent="당첨: "+names[Math.floor(Math.random()*names.length)];
     }
-
   },100);
 }
 
 function spinRoulette(){
-
-  const items=document.getElementById("rouletteInput")
-  .value
-  .split("\n")
-  .filter(v=>v.trim()!="");
-
+  const items=document.getElementById("rouletteInput").value.split("\n").filter(v=>v.trim());
   if(items.length===0)return;
-
   const wheel=document.getElementById("wheel");
-
-  const deg=3600+Math.random()*360;
-
-  wheel.style.transform=`rotate(${deg}deg)`;
-
+  wheel.style.transform=`rotate(${3600+Math.random()*360}deg)`;
   setTimeout(()=>{
-
-    const result=items[Math.floor(Math.random()*items.length)];
-
-    document.getElementById("rouletteResult").textContent=result;
-
+    document.getElementById("rouletteResult").textContent=items[Math.floor(Math.random()*items.length)];
   },4000);
 }
 
-function makeTeams(){
-
-  const names=document.getElementById("teamInput")
-  .value
-  .split("\n")
-  .filter(v=>v.trim()!="");
-
-  const count=Number(document.getElementById("teamCount").value);
-
-  names.sort(()=>Math.random()-0.5);
-
-  const teams=[];
-
-  for(let i=0;i<count;i++){
-    teams.push([]);
-  }
-
-  names.forEach((name,index)=>{
-    teams[index%count].push(name);
-  });
-
-  let html="";
-
-  teams.forEach((team,index)=>{
-
-    html+=`<h3>${index+1}팀</h3><p>${team.join(", ")}</p>`;
-
-  });
-
-  document.getElementById("teamResult").innerHTML=html;
-}
-
 function drawNumber(){
-
-  const min=Number(document.getElementById("minNum").value);
-
-  const max=Number(document.getElementById("maxNum").value);
-
+  let min=Number(document.getElementById("minNum").value);
+  let max=Number(document.getElementById("maxNum").value);
+  if(min>max)[min,max]=[max,min];
   const num=Math.floor(Math.random()*(max-min+1))+min;
-
   document.getElementById("numberResult").textContent=num;
 }
 
-function pickLunch(){
-
-  const foods=document.getElementById("lunchInput")
-  .value
-  .split("\n")
-  .filter(v=>v.trim()!="");
-
-  const result=foods[Math.floor(Math.random()*foods.length)];
-
-  document.getElementById("lunchResult").textContent=result;
-}
-
 function pickPenalty(){
-
-  const items=document.getElementById("penaltyInput")
-  .value
-  .split("\n")
-  .filter(v=>v.trim()!="");
-
-  const result=items[Math.floor(Math.random()*items.length)];
-
-  document.getElementById("penaltyResult").textContent=result;
+  const items=document.getElementById("penaltyInput").value.split("\n").filter(v=>v.trim());
+  if(items.length===0)return;
+  document.getElementById("penaltyResult").textContent=items[Math.floor(Math.random()*items.length)];
 }
 
 makeDrawInputs();
-
 </script>
-
 </body>
 </html>
